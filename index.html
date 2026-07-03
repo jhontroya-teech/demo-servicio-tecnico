@@ -172,7 +172,7 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
   <div style="background:#fff;border-radius:18px;padding:30px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3);">
     <div style="font-size:42px;margin-bottom:10px;">🔒</div>
     <h2 style="font-size:19px;font-weight:800;color:#1a1a1a;margin-bottom:10px;">Versión de Prueba</h2>
-    <p style="font-size:14px;color:#666;line-height:1.5;margin-bottom:22px;">Esta versión de prueba permite registrar <b>un solo contacto</b>.<br>Para agregar más contactos y desbloquear todas las funciones, comunícate al:</p>
+    <p style="font-size:14px;color:#666;line-height:1.5;margin-bottom:22px;">Esta versión de prueba permite registrar hasta <b>5 contactos</b>.<br>Para agregar más contactos y desbloquear todas las funciones, comunícate al:</p>
     <a href="tel:0999805003" style="display:block;font-size:24px;font-weight:800;color:#0a6e4a;margin-bottom:22px;text-decoration:none;">📞 0999805003</a>
     <button onclick="closeProModal()" style="width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Entendido</button>
   </div>
@@ -490,7 +490,7 @@ function teRenderClientDetail(){
 function teGoNewClient(){
   // VERSIÓN DE PRUEBA: solo se permite 1 contacto. Si ya existe uno, se
   // bloquea el acceso al formulario y se muestra el aviso de la versión PRO.
-  if(teDb.clients.length >= 1){
+  if(teDb.clients.length >= 5){
     showProModal();
     return;
   }
@@ -516,7 +516,7 @@ function teEditClient(){
 
 function teSaveClient(){
   // VERSIÓN DE PRUEBA: candado extra por si se intenta guardar un 2do contacto
-  if(!teEditingClientId && teDb.clients.length >= 1){
+  if(!teEditingClientId && teDb.clients.length >= 5){
     showProModal();
     return;
   }

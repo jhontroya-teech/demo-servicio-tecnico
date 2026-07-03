@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Versión de Prueba - Servicio Técnico</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#1a1a1a;max-width:430px;margin:0 auto;min-height:100vh;}
+
+/* ── PANTALLA DE SELECCIÓN ── */
+#select-screen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(160deg,#eef2ff 0%,#f0faf5 100%);
+  z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;
+  padding:2rem 1.5rem;
+}
+.select-title{font-size:32px;font-weight:800;color:#1a1a1a;text-align:center;margin-bottom:6px;}
+.select-sub{font-size:14px;color:#888;text-align:center;margin-bottom:2.5rem;}
+.select-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:380px;}
+.select-card{background:#fff;border-radius:20px;padding:28px 16px 22px;text-align:center;cursor:pointer;
+  border:2px solid transparent;box-shadow:0 2px 16px rgba(0,0,0,0.07);transition:transform 0.15s,box-shadow 0.15s,border-color 0.15s;}
+.select-card:active{transform:scale(0.97);}
+.select-card.thermo:hover{border-color:#0a6e4a;}
+.select-card.jhon:hover{border-color:#1a4a9a;}
+.select-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px;}
+.select-icon.thermo{background:#e6f9f0;color:#0a6e4a;}
+.select-icon.jhon{background:#e6f0ff;color:#1a4a9a;}
+.select-card-name{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:16px;}
+.select-btn{width:100%;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;color:#fff;}
+.select-btn.thermo{background:#0a6e4a;}
+.select-btn.jhon{background:#1a4a9a;}
+
+/* ── LOGIN ── */
+#login-screen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:8888;display:none;justify-content:center;align-items:center;flex-direction:column;
+  background:#0a6e4a;
+}
+#login-screen.active{display:flex !important;}
+#login-screen.mode-thermo{background:#0a6e4a;}
+#login-screen.mode-jhon{background:#1a1a1a;}
+.login-box{background:#fff;padding:30px;border-radius:14px;text-align:center;width:85%;max-width:350px;}
+.login-box h2{margin-bottom:5px;font-weight:700;}
+.login-box h2.thermo{color:#0a6e4a;}
+.login-box h2.jhon{color:#1a1a1a;}
+.login-box p{font-size:13px;color:#888;margin-bottom:25px;}
+.login-box input{width:100%;padding:12px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;outline:none;}
+.login-box input:last-of-type{margin-bottom:20px;}
+.login-btn{width:100%;padding:13px;color:#fff;border:none;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;}
+.login-btn.thermo{background:#0a6e4a;}
+.login-btn.jhon{background:#1a1a1a;}
+.login-back{margin-top:14px;background:none;border:none;color:#aaa;font-size:13px;cursor:pointer;font-family:inherit;}
+#login-alert{margin-top:15px;padding:10px;border-radius:8px;font-size:14px;font-weight:600;display:none;}
+
+/* ── APPS ── */
+#app-thermo,#app-jhon{display:none;}
+#app-thermo.active,#app-jhon.active{display:block;}
+
+/* ── SHARED APP STYLES ── */
+.screen{display:none;padding:1rem;padding-bottom:5rem;}
+.screen.active{display:block;}
+.header{display:flex;align-items:center;gap:10px;background:#fff;margin:-1rem -1rem 1.5rem;padding:1rem;position:sticky;top:0;z-index:10;border-bottom:1px solid #e5e5e5;}
+.header h1{font-size:18px;font-weight:600;color:#1a1a1a;flex:1;}
+.back-btn{background:none;border:none;cursor:pointer;color:#666;font-size:22px;padding:0;display:flex;align-items:center;}
+.section-title{font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;margin-top:1.25rem;}
+.section-title:first-child{margin-top:0;}
+input,textarea,select{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;color:#1a1a1a;background:#fff;font-family:inherit;margin-bottom:10px;outline:none;-webkit-appearance:none;appearance:none;}
+input:focus,textarea:focus,select:focus{border-color:#1a1a1a;}
+textarea{min-height:85px;resize:vertical;}
+.btn-primary{width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit;}
+.btn-primary:disabled{background:#999;cursor:not-allowed;}
+.btn-secondary{width:100%;padding:13px;background:#fff;color:#1a1a1a;border:1px solid #ddd;border-radius:10px;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;}
+.btn-danger{width:100%;padding:13px;background:#fff;color:#e53e3e;border:1px solid #e53e3e;border-radius:10px;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;}
+.client-card{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;}
+.client-name{font-size:16px;font-weight:600;color:#1a1a1a;}
+.client-meta{font-size:13px;color:#888;margin-top:3px;}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:#f0f0f0;color:#555;margin-top:6px;margin-right:4px;}
+.fab{position:fixed;bottom:1.5rem;right:1.5rem;width:56px;height:56px;border-radius:50%;background:#1a1a1a;color:#fff;border:none;font-size:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:20;}
+.canvas-wrap{border:1px solid #ddd;border-radius:10px;margin-bottom:8px;background:#fff;overflow:hidden;}
+canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;height:160px;}
+.clear-sig{background:none;border:none;color:#888;font-size:13px;cursor:pointer;padding:4px 0;font-family:inherit;display:flex;align-items:center;gap:4px;}
+.empty-state{text-align:center;padding:3rem 1rem;color:#aaa;}
+.empty-state i{font-size:52px;display:block;margin-bottom:1rem;}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-label{color:#888;flex-shrink:0;margin-right:12px;}
+.detail-value{color:#1a1a1a;font-weight:500;text-align:right;word-break:break-word;}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.photo-thumb{width:100%;height:100px;object-fit:cover;border-radius:10px;border:1px solid #eee;}
+.photo-add{width:100%;height:100px;border:1.5px dashed #ccc;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#aaa;font-size:32px;background:#fafafa;}
+.sig-preview{max-width:100%;border-radius:10px;border:1px solid #eee;margin-top:8px;}
+.search-wrap{position:relative;margin-bottom:1rem;}
+.search-wrap input{padding-left:38px;margin-bottom:0;}
+.search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#aaa;font-size:18px;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
+.stat-card{background:#fff;border-radius:14px;padding:14px;text-align:center;border:1px solid #e5e5e5;}
+.stat-num{font-size:28px;font-weight:700;color:#1a1a1a;}
+.stat-label{font-size:12px;color:#888;margin-top:2px;}
+.visit-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
+.visit-tipo{font-size:15px;font-weight:600;color:#1a1a1a;margin-top:2px;}
+.visit-fecha{font-size:13px;color:#888;}
+.toast{position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:500;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100;white-space:nowrap;}
+.toast.show{opacity:1;}
+.app-logo{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0;}
+.info-card{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px 16px;margin-bottom:1rem;}
+.sync-indicator{font-size:11px;color:#888;display:flex;align-items:center;gap:4px;font-weight:500;justify-content:center;margin-bottom:10px;}
+.sync-spin{animation:spin 1s linear infinite;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.checkbox-resp{display:flex;align-items:flex-start;gap:10px;background:#fffbe6;border:1px solid #ffe58f;border-radius:10px;padding:12px 14px;margin-bottom:12px;margin-top:4px;}
+.checkbox-resp input[type=checkbox]{width:20px;height:20px;flex-shrink:0;margin-top:2px;cursor:pointer;-webkit-appearance:checkbox;appearance:checkbox;}
+.checkbox-resp label{font-size:13px;color:#444;line-height:1.5;cursor:pointer;}
+.pago-box{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.pago-opciones{display:flex;gap:16px;margin-bottom:12px;}
+.pago-opcion{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:15px;color:#1a1a1a;}
+.pago-opcion input[type=radio]{width:18px;height:18px;cursor:pointer;-webkit-appearance:radio;appearance:radio;flex-shrink:0;}
+.costo-wrap{position:relative;}
+.costo-wrap span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#555;font-size:15px;font-weight:600;pointer-events:none;}
+.costo-wrap input{padding-left:28px;margin-bottom:0;}
+/* Botón cambiar usuario */
+.btn-switch-user{display:flex;align-items:center;gap:6px;padding:7px 13px;background:#fff;border:1.5px solid #e5e5e5;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;color:#1a1a1a;white-space:nowrap;}
+.btn-switch-user i{font-size:16px;}
+/* ── PESTAÑAS ── */
+.tabs{display:flex;background:#fff;border-bottom:1px solid #e5e5e5;margin:-1.5rem -1rem 1rem;}
+.tab-btn{flex:1;padding:12px 0;border:none;background:none;font-size:14px;font-weight:500;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:2px solid transparent;font-family:inherit;}
+.tab-btn.active-thermo{color:#0a6e4a;border-bottom-color:#0a6e4a;}
+.tab-btn.active-jhon{color:#1a4a9a;border-bottom-color:#1a4a9a;}
+/* ── CALENDARIO ── */
+.cal-wrap{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px;margin-bottom:1rem;}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.cal-nav button{background:none;border:none;cursor:pointer;color:#888;font-size:20px;padding:4px 8px;border-radius:8px;}
+.cal-nav span{font-size:15px;font-weight:600;color:#1a1a1a;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;}
+.cal-day-label{font-size:11px;color:#aaa;padding:4px 0;font-weight:600;}
+.cal-day{font-size:13px;color:#555;padding:6px 2px;border-radius:50%;cursor:pointer;position:relative;line-height:1;}
+.cal-day:hover{background:#f0f0f0;}
+.cal-day.has-visits::after{content:'';display:block;width:5px;height:5px;border-radius:50%;margin:2px auto 0;}
+.cal-day.empty{color:#ddd;cursor:default;}
+.cal-day.empty:hover{background:none;}
+.cal-day-selected-thermo{background:#0a6e4a !important;color:#fff !important;}
+.cal-day-selected-thermo.has-visits::after{background:#a3d9c0 !important;}
+.cal-day-selected-jhon{background:#1a4a9a !important;color:#fff !important;}
+.cal-day-selected-jhon.has-visits::after{background:#a3bfef !important;}
+.cal-has-thermo::after{background:#0a6e4a;}
+.cal-has-jhon::after{background:#1a4a9a;}
+.cal-day-summary{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px;margin-bottom:1rem;}
+.cal-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.cal-day-title{font-size:14px;font-weight:600;color:#1a1a1a;}
+.cal-day-total{font-size:13px;font-weight:700;}
+.cal-visit-item{background:#f9f9f9;border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;border:1px solid #eee;}
+.cal-visit-item:last-child{margin-bottom:0;}
+.cal-visit-name{font-size:14px;font-weight:600;color:#1a1a1a;}
+.cal-visit-meta{display:flex;justify-content:space-between;margin-top:3px;}
+.cal-visit-tipo{font-size:12px;color:#888;}
+.cal-visit-costo{font-size:12px;font-weight:600;}
+.cal-empty{text-align:center;padding:2rem 1rem;color:#aaa;font-size:14px;}
+/* Botones PDF y Home por app */
+.btn-pdf-thermo{width:100%;padding:13px;background:#0a6e4a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-pdf-jhon{width:100%;padding:13px;background:#1a4a9a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-home-shared{width:100%;padding:13px;background:#fff;color:#1a1a1a;border:1px solid #ddd;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;}
+</style>
+</head>
+<body>
+
+<div id="toast-global" class="toast"></div>
+
+<!-- ══════════════════════════════════════
+     MODAL VERSIÓN PRO (límite de contactos)
+══════════════════════════════════════ -->
+<div id="pro-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:99999;padding:1.5rem;">
+  <div style="background:#fff;border-radius:18px;padding:30px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3);">
+    <div style="font-size:42px;margin-bottom:10px;">🔒</div>
+    <h2 style="font-size:19px;font-weight:800;color:#1a1a1a;margin-bottom:10px;">Versión de Prueba</h2>
+    <p style="font-size:14px;color:#666;line-height:1.5;margin-bottom:22px;">Esta versión de prueba permite registrar <b>un solo contacto</b>.<br>Para agregar más contactos y desbloquear todas las funciones, comunícate al:</p>
+    <a href="tel:0999805003" style="display:block;font-size:24px;font-weight:800;color:#0a6e4a;margin-bottom:22px;text-decoration:none;">📞 0999805003</a>
+    <button onclick="closeProModal()" style="width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Entendido</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     APP: VERSIÓN DE PRUEBA
+══════════════════════════════════════ -->
+<div id="app-thermo" class="active">
+
+  <!-- INICIO -->
+  <div id="te-screen-home" class="screen active">
+    <div class="header">
+      <div class="app-logo" style="background:#0a6e4a;"><i class="ti ti-snowflake"></i></div>
+      <h1>Versión de Prueba</h1>
+      <i class="ti ti-refresh" id="te-manual-sync-btn" style="font-size:20px;color:#0a6e4a;cursor:pointer;margin-right:8px;" onclick="teFetchData()"></i>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active-thermo" id="te-tab-clientes" onclick="teSetTab('clientes')"><i class="ti ti-users"></i> Clientes</button>
+      <button class="tab-btn" id="te-tab-agenda" onclick="teSetTab('agenda')"><i class="ti ti-calendar"></i> Agenda</button>
+    </div>
+    <div id="te-sync-status" class="sync-indicator"><i class="ti ti-cloud-check"></i> Conectando...</div>
+    <div id="te-tab-clientes-content">
+      <div class="stats">
+        <div class="stat-card"><div class="stat-num" id="te-total-clients">0</div><div class="stat-label">Clientes</div></div>
+        <div class="stat-card"><div class="stat-num" id="te-total-visits">0</div><div class="stat-label">Visitas</div></div>
+      </div>
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="te-search-input" placeholder="Buscar cliente..." oninput="teRenderClients()">
+      </div>
+      <div id="te-client-list"></div>
+    </div>
+    <div id="te-tab-agenda-content" style="display:none;">
+      <div class="cal-wrap">
+        <div class="cal-nav">
+          <button onclick="teCalPrev()"><i class="ti ti-chevron-left"></i></button>
+          <span id="te-cal-title"></span>
+          <button onclick="teCalNext()"><i class="ti ti-chevron-right"></i></button>
+        </div>
+        <div class="cal-grid" id="te-cal-grid"></div>
+      </div>
+      <div id="te-cal-day-panel"></div>
+    </div>
+    <button class="fab" onclick="teGoNewClient()"><i class="ti ti-plus"></i></button>
+  </div>
+
+  <!-- NUEVO / EDITAR CLIENTE -->
+  <div id="te-screen-new-client" class="screen">
+    <div class="header">
+      <button class="back-btn" onclick="teGoScreen('te-screen-home')"><i class="ti ti-arrow-left"></i></button>
+      <h1 id="te-new-client-title">Nuevo cliente</h1>
+    </div>
+    <div class="section-title">Datos personales</div>
+    <input type="text" id="te-c-nombre" placeholder="Nombre completo">
+    <input type="tel" id="te-c-telefono" placeholder="Teléfono">
+    <input type="text" id="te-c-direccion" placeholder="Dirección">
+    <div class="section-title">Equipo</div>
+    <select id="te-c-tipo">
+      <option value="">Tipo de aire acondicionado</option>
+      <option>Split</option><option>Central</option><option>Ventana</option>
+      <option>Mini split</option><option>Cassette</option><option>Otro</option>
+    </select>
+    <input type="text" id="te-c-marca" placeholder="Marca y modelo (opcional)">
+    <input type="text" id="te-c-btu" placeholder="BTU / Capacidad (opcional)">
+    <button class="btn-primary" onclick="teSaveClient()">Guardar cliente</button>
+    <button class="btn-secondary" onclick="teGoScreen('te-screen-home')">Cancelar</button>
+  </div>
+
+  <!-- DETALLE CLIENTE -->
+  <div id="te-screen-client-detail" class="screen">
+    <div class="header">
+      <button class="back-btn" onclick="teGoScreen('te-screen-home')"><i class="ti ti-arrow-left"></i></button>
+      <h1 id="te-client-detail-name">Cliente</h1>
+    </div>
+    <div class="info-card" id="te-client-detail-info"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <button class="btn-secondary" style="margin-top:0" onclick="teEditClient()"><i class="ti ti-edit"></i> Editar</button>
+      <button class="btn-primary" style="margin-top:0" onclick="teGoNewVisit()"><i class="ti ti-plus"></i> Visita</button>
+    </div>
+    <div class="section-title" style="margin-top:1.5rem">Historial de visitas</div>
+    <div id="te-visit-list"></div>
+  </div>
+
+  <!-- NUEVA / EDITAR VISITA -->
+  <div id="te-screen-new-visit" class="screen">
+    <div class="header">
+      <button class="back-btn" onclick="teGoScreen('te-screen-client-detail')"><i class="ti ti-arrow-left"></i></button>
+      <h1 id="te-new-visit-title">Nueva visita</h1>
+    </div>
+    <div class="section-title">Información</div>
+    <input type="date" id="te-v-fecha">
+    <select id="te-v-tipo">
+      <option value="">Tipo de servicio</option>
+      <option>Instalación</option><option>Limpieza</option><option>Revisión técnica</option>
+      <option>Fuga de gas</option><option>Mantenimiento preventivo</option>
+      <option>Reparación</option><option>Otro</option>
+    </select>
+    <div class="section-title">Detalle del equipo</div>
+    <textarea id="te-v-detalle" placeholder="¿Qué tenía el aire? Estado del equipo..."></textarea>
+    <div class="section-title">Observación</div>
+    <textarea id="te-v-observacion" placeholder="¿Qué se resolvió? Trabajo realizado..."></textarea>
+    <div class="section-title">Fotos</div>
+    <div class="photo-grid" id="te-photo-grid"></div>
+    <input type="file" id="te-photo-input" accept="image/*" multiple style="display:none" onchange="teAddPhotos(this)">
+    <div class="checkbox-resp">
+      <input type="checkbox" id="te-v-responsabilidad">
+      <label for="te-v-responsabilidad">"Acepto que fui informado por el técnico sobre las condiciones y riesgos del servicio, asumiendo la total responsabilidad como cliente."</label>
+    </div>
+    <div class="section-title">Modo de pago</div>
+    <div class="pago-box">
+      <div class="pago-opciones">
+        <label class="pago-opcion"><input type="radio" name="te-v-modopago" value="Transferencia"> Transferencia</label>
+        <label class="pago-opcion"><input type="radio" name="te-v-modopago" value="Efectivo"> Efectivo</label>
+      </div>
+      <div class="costo-wrap"><span>$</span><input type="number" id="te-v-costo" placeholder="0.00" min="0" step="0.01"></div>
+    </div>
+    <div class="section-title">Firma del cliente</div>
+    <p style="font-size:13px;color:#888;margin-bottom:8px;">El cliente firma con el dedo:</p>
+    <div class="canvas-wrap"><canvas id="te-sigCanvas" class="sigCanvas"></canvas></div>
+    <button class="clear-sig" onclick="teClearSig()"><i class="ti ti-trash"></i> Limpiar firma</button>
+    <button class="btn-primary" id="te-btn-guardar-visita" onclick="teSaveVisit()" style="margin-top:1rem">Guardar visita</button>
+    <div id="te-post-save-btns" style="display:none;">
+      <button class="btn-pdf-thermo" onclick="teGenerarPDF()"><i class="ti ti-file-type-pdf"></i> Compartir PDF</button>
+      <button class="btn-home-shared" onclick="teGoScreen('te-screen-home')"><i class="ti ti-home"></i> Inicio</button>
+    </div>
+    <button class="btn-secondary" id="te-btn-cancelar" onclick="teGoScreen('te-screen-client-detail')" style="margin-top:8px;">Cancelar</button>
+  </div>
+
+  <!-- DETALLE VISITA -->
+  <div id="te-screen-visit-detail" class="screen">
+    <div class="header">
+      <button class="back-btn" onclick="teGoScreen('te-screen-client-detail')"><i class="ti ti-arrow-left"></i></button>
+      <h1>Detalle de visita</h1>
+    </div>
+    <div id="te-visit-detail-content"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem;">
+      <button class="btn-secondary" style="margin-top:0" onclick="teEditVisit()"><i class="ti ti-edit"></i> Editar</button>
+      <button class="btn-pdf-thermo" style="margin-top:0" onclick="teGenerarPDF()"><i class="ti ti-file-type-pdf"></i> PDF</button>
+    </div>
+    <button class="btn-home-shared" onclick="teGoScreen('te-screen-home')"><i class="ti ti-home"></i> Inicio</button>
+    <button class="btn-danger" onclick="teDeleteVisit()" style="margin-top:10px;"><i class="ti ti-trash"></i> Eliminar visita</button>
+  </div>
+
+</div><!-- /app-demo -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+function showToast(msg){
+  const t = document.getElementById('toast-global');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════════════════════
+//  VERSIÓN DE PRUEBA (basada en la lógica de Thermo Electric)
+// ══════════════════════════════════════════════════════════
+const TE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzSW0S0F5rVyxjsY5AG81Xby3Df8kgusjd-NKsZmvfVIRtPgHK7yGSu3VsWlQbikEx3ww/exec";
+let teDb = JSON.parse(localStorage.getItem('te_demo_db') || '{"clients":[],"visits":[]}');
+let teCurrentClientId=null, teCurrentVisitId=null, teEditingClientId=null, teEditingVisitId=null;
+let teVisitPhotos=[], teSigCtx, teSigDrawing=false, teSigHasContent=false;
+
+function teSaveDb(){ localStorage.setItem('te_demo_db', JSON.stringify(teDb)); teUpdateStats(); }
+
+function teFetchData(){
+  const ind = document.getElementById('te-sync-status');
+  const icon = document.getElementById('te-manual-sync-btn');
+  if(ind) ind.innerHTML=`<i class="ti ti-refresh sync-spin"></i> Descargando datos...`;
+  if(icon) icon.classList.add('sync-spin');
+  fetch(`${TE_SHEET_URL}?action=readAll`)
+    .then(r=>r.json())
+    .then(data=>{
+      if(data && data.clients){
+        // Merge por id (NO reemplazo total): antes, si el servidor traía visitas,
+        // se pisaba toda teDb.visits con lo del servidor. Eso borraba:
+        //  1) visitas guardadas hace poco en este teléfono que todavía no llegaban
+        //     al Sheet (condición de carrera al sincronizar justo después de guardar), y
+        //  2) las fotos y la firma en base64, que SOLO existen en localStorage
+        //     (el Sheet nunca las guarda, solo fotos_count y link_reporte).
+        const serverVisits = data.visits || [];
+        const localVisits  = teDb.visits || [];
+        const localById = {};
+        localVisits.forEach(v=>{ localById[v.id] = v; });
+
+        const mergedById = {};
+        serverVisits.forEach(sv=>{
+          const lv = localById[sv.id];
+          // Se toman los datos del servidor (fuente de verdad para campos compartidos)
+          // pero se preservan fotos/firma/fotosLinks locales si el servidor no los trae.
+          mergedById[sv.id] = lv ? { ...sv, fotos: (lv.fotos && lv.fotos.length ? lv.fotos : sv.fotos), firma: lv.firma || sv.firma, fotosLinks: (lv.fotosLinks && lv.fotosLinks.length ? lv.fotosLinks : sv.fotosLinks) } : sv;
+        });
+        // Cualquier visita local que aún no exista en el servidor se conserva tal cual
+        localVisits.forEach(lv=>{
+          if(!mergedById[lv.id]) mergedById[lv.id] = lv;
+        });
+
+        const mergedVisits = Object.values(mergedById);
+        teDb = { clients: data.clients, visits: mergedVisits };
+        teSaveDb(); teRenderClients();
+        if(ind) ind.innerHTML=`<i class="ti ti-cloud-check" style="color:#0a6e4a"></i> Sincronizado con Excel`;
+      }
+    })
+    .catch(()=>{ if(ind) ind.innerHTML=`<i class="ti ti-cloud-off" style="color:#e53e3e"></i> Modo local (Sin internet)`; })
+    .finally(()=>{ if(icon) icon.classList.remove('sync-spin'); });
+}
+
+function teSyncToSheets(data){
+  const ind=document.getElementById('te-sync-status');
+  if(ind) ind.innerHTML=`<i class="ti ti-cloud-upload sync-spin"></i> Subiendo al Excel...`;
+
+  // Construir parámetros
+  const params=new URLSearchParams();
+  params.append('type', data.type||'');
+  params.append('id', data.id||'');
+  if(data.type==='client'){
+    params.append('nombre', data.nombre||'');
+    params.append('telefono', data.telefono||'');
+    params.append('direccion', data.direccion||'');
+    params.append('tipo', data.tipo||'');
+    params.append('marca', data.marca||'');
+    params.append('btu', data.btu||'');
+  }
+  if(data.type==='visit'){
+    params.append('clientId', data.clientId||'');
+    params.append('fecha', data.fecha||'');
+    params.append('tipo', data.tipo||'');
+    params.append('tipos', data.tipo||'');
+    params.append('detalle', data.detalle||'');
+    params.append('observacion', data.observacion||'');
+    params.append('responsabilidad', data.responsabilidad?'Si':'No');
+    params.append('tiene_firma', data.firma?'Si':'No');
+    params.append('fotos_count', data.fotos?data.fotos.length:0);
+    params.append('link_reporte', '');
+    params.append('modoPago', data.modoPago||'');
+    params.append('costoServicio', data.costoServicio||'');
+  }
+
+  // POST con redirect follow para que funcione en celulares con datos móviles
+  fetch(TE_SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString(),
+    redirect: 'follow'
+  })
+  .then(r => r.text())
+  .then(txt => {
+    try {
+      const res = JSON.parse(txt);
+      if(res.status === 'ok'){
+        if(ind) ind.innerHTML=`<i class="ti ti-cloud-check" style="color:#0a6e4a"></i> Guardado en Excel ✓`;
+      } else {
+        throw new Error(res.msg||'error');
+      }
+    } catch(e){
+      if(ind) ind.innerHTML=`<i class="ti ti-alert-circle" style="color:#e6a23c"></i> Error al guardar`;
+      console.error('TE Sheets error:', txt);
+    }
+  })
+  .catch(err => {
+    if(ind) ind.innerHTML=`<i class="ti ti-cloud-off" style="color:#e53e3e"></i> Sin conexión — guardado local`;
+    console.error('TE fetch error:', err);
+  });
+}
+
+function teGoScreen(id){
+  document.querySelectorAll('#app-thermo .screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='te-screen-home'){ teUpdateStats(); teRenderClients(); if(teCalYear!==undefined) teRenderCal(); }
+  if(id==='te-screen-client-detail') teRenderClientDetail();
+  if(id==='te-screen-new-visit') teInitSig();
+}
+
+function teUpdateStats(){
+  document.getElementById('te-total-clients').textContent=teDb.clients.length;
+  document.getElementById('te-total-visits').textContent=teDb.visits.length;
+}
+
+function teRenderClients(){
+  const q=document.getElementById('te-search-input').value.toLowerCase();
+  const list=document.getElementById('te-client-list');
+  const filtered=teDb.clients.filter(c=>c.nombre.toLowerCase().includes(q)||(c.direccion||'').toLowerCase().includes(q));
+  if(!filtered.length){ list.innerHTML=`<div class="empty-state"><i class="ti ti-users"></i><p>Sin resultados</p></div>`; return; }
+  list.innerHTML=filtered.map(c=>{
+    const visits=teDb.visits.filter(v=>String(v.clientId)===String(c.id));
+    return `<div class="client-card" onclick="teOpenClient('${c.id}')">
+      <div class="client-name">${c.nombre}</div>
+      <div class="client-meta"><i class="ti ti-map-pin"></i> ${c.direccion||'Sin dirección'}</div>
+      <span class="badge" style="background:#e6f9f0;color:#0a6e4a;">${c.tipo||'Sin tipo'}</span>
+      <span class="badge">${visits.length} visitas</span>
+    </div>`;
+  }).join('');
+}
+
+function teOpenClient(id){ teCurrentClientId=id; teGoScreen('te-screen-client-detail'); }
+
+function teRenderClientDetail(){
+  const c=teDb.clients.find(x=>String(x.id)===String(teCurrentClientId)); if(!c) return;
+  document.getElementById('te-client-detail-name').textContent=c.nombre;
+  document.getElementById('te-client-detail-info').innerHTML=`
+    <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-value">${c.telefono||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Dirección</span><span class="detail-value">${c.direccion||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Tipo</span><span class="detail-value">${c.tipo||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Marca</span><span class="detail-value">${c.marca||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">BTU</span><span class="detail-value">${c.btu||'—'}</span></div>`;
+  const visits=teDb.visits.filter(v=>String(v.clientId)===String(teCurrentClientId));
+  const vlist=document.getElementById('te-visit-list');
+  if(!visits.length){ vlist.innerHTML=`<div class="empty-state"><p>Sin visitas registradas</p></div>`; return; }
+  vlist.innerHTML=visits.map(v=>`<div class="visit-card" onclick="teOpenVisit('${v.id}')">
+    <div class="visit-tipo">${v.tipo}</div>
+    <div class="visit-fecha">${v.fecha}</div>
+  </div>`).join('');
+}
+
+function teGoNewClient(){
+  // VERSIÓN DE PRUEBA: solo se permite 1 contacto. Si ya existe uno, se
+  // bloquea el acceso al formulario y se muestra el aviso de la versión PRO.
+  if(teDb.clients.length >= 1){
+    showProModal();
+    return;
+  }
+  teEditingClientId=null;
+  document.getElementById('te-new-client-title').textContent="Nuevo cliente";
+  ['te-c-nombre','te-c-telefono','te-c-direccion','te-c-marca','te-c-btu'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('te-c-tipo').value='';
+  teGoScreen('te-screen-new-client');
+}
+
+function teEditClient(){
+  const c=teDb.clients.find(x=>String(x.id)===String(teCurrentClientId)); if(!c) return;
+  teEditingClientId=c.id;
+  document.getElementById('te-new-client-title').textContent="Editar cliente";
+  document.getElementById('te-c-nombre').value=c.nombre;
+  document.getElementById('te-c-telefono').value=c.telefono||'';
+  document.getElementById('te-c-direccion').value=c.direccion||'';
+  document.getElementById('te-c-tipo').value=c.tipo||'';
+  document.getElementById('te-c-marca').value=c.marca||'';
+  document.getElementById('te-c-btu').value=c.btu||'';
+  teGoScreen('te-screen-new-client');
+}
+
+function teSaveClient(){
+  // VERSIÓN DE PRUEBA: candado extra por si se intenta guardar un 2do contacto
+  if(!teEditingClientId && teDb.clients.length >= 1){
+    showProModal();
+    return;
+  }
+  const nombre=document.getElementById('te-c-nombre').value.trim(); if(!nombre) return;
+  const data={nombre,telefono:document.getElementById('te-c-telefono').value.trim(),direccion:document.getElementById('te-c-direccion').value.trim(),tipo:document.getElementById('te-c-tipo').value,marca:document.getElementById('te-c-marca').value.trim(),btu:document.getElementById('te-c-btu').value.trim()};
+  if(teEditingClientId){
+    const idx=teDb.clients.findIndex(x=>String(x.id)===String(teEditingClientId));
+    teDb.clients[idx]={...teDb.clients[idx],...data};
+    showToast("Cliente actualizado");
+  } else {
+    const newId='c_'+Date.now(); teDb.clients.push({id:newId,...data}); teCurrentClientId=newId;
+    showToast("Cliente creado");
+  }
+  teSaveDb(); teSyncToSheets({type:'client',id:teCurrentClientId,...data});
+  teGoScreen('te-screen-client-detail');
+}
+
+function teGoNewVisit(){
+  teEditingVisitId=null;
+  document.getElementById('te-new-visit-title').textContent="Nueva visita";
+  document.getElementById('te-v-fecha').value=new Date().toISOString().split('T')[0];
+  document.getElementById('te-v-tipo').value='';
+  document.getElementById('te-v-detalle').value='';
+  document.getElementById('te-v-observacion').value='';
+  document.getElementById('te-v-responsabilidad').checked=false;
+  document.querySelectorAll('input[name="te-v-modopago"]').forEach(r=>r.checked=false);
+  document.getElementById('te-v-costo').value='';
+  const btnG=document.getElementById('te-btn-guardar-visita');
+  btnG.disabled=false; btnG.textContent='Guardar visita';
+  document.getElementById('te-post-save-btns').style.display='none';
+  document.getElementById('te-btn-cancelar').style.display='';
+  teVisitPhotos=[]; teRenderPhotoGrid(); teGoScreen('te-screen-new-visit');
+}
+
+function teEditVisit(){
+  const v=teDb.visits.find(x=>String(x.id)===String(teCurrentVisitId)); if(!v) return;
+  teEditingVisitId=v.id;
+  document.getElementById('te-new-visit-title').textContent="Editar visita";
+  document.getElementById('te-v-fecha').value=v.fecha;
+  document.getElementById('te-v-tipo').value=v.tipo;
+  document.getElementById('te-v-detalle').value=v.detalle;
+  document.getElementById('te-v-observacion').value=v.observacion;
+  document.getElementById('te-v-responsabilidad').checked=v.responsabilidad||false;
+  document.querySelectorAll('input[name="te-v-modopago"]').forEach(r=>{ r.checked=(r.value===(v.modoPago||'')); });
+  document.getElementById('te-v-costo').value=v.costoServicio||'';
+  const btnG=document.getElementById('te-btn-guardar-visita');
+  btnG.disabled=false; btnG.textContent='Guardar visita';
+  document.getElementById('te-post-save-btns').style.display='none';
+  document.getElementById('te-btn-cancelar').style.display='';
+  {
+    const teFotosLinksExist=(v.fotosLinks?(Array.isArray(v.fotosLinks)?v.fotosLinks:String(v.fotosLinks).split(',').filter(Boolean)):[]);
+    const teFotosBase64Exist=v.fotos||[];
+    teVisitPhotos=teFotosLinksExist.map((link,i)=>({id:'existing_'+Math.random(),preview:teFotosBase64Exist[i]||link,link:link,uploading:false}));
+  }
+  teRenderPhotoGrid(); teGoScreen('te-screen-new-visit');
+}
+
+function teInitSig(){
+  const canvas=document.getElementById('te-sigCanvas');
+  canvas.width=canvas.offsetWidth||380; canvas.height=160;
+  teSigCtx=canvas.getContext('2d'); teSigCtx.strokeStyle='#1a1a1a'; teSigCtx.lineWidth=2.5;
+  teSigHasContent=false;
+  canvas.ontouchstart=canvas.onmousedown=e=>{teSigDrawing=true;teSigCtx.beginPath();teSigHasContent=true;};
+  canvas.ontouchmove=canvas.onmousemove=e=>{
+    if(!teSigDrawing) return; e.preventDefault(); const r=canvas.getBoundingClientRect();
+    teSigCtx.lineTo((e.touches?e.touches[0].clientX:e.clientX)-r.left,(e.touches?e.touches[0].clientY:e.clientY)-r.top);
+    teSigCtx.stroke();
+  };
+  canvas.ontouchend=canvas.onmouseup=()=>teSigDrawing=false;
+}
+
+function teClearSig(){ if(teSigCtx){ teSigCtx.clearRect(0,0,380,160); teSigHasContent=false; } }
+function teAddPhotos(input){
+  Array.from(input.files).forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const tempId='temp_'+Date.now()+Math.random();
+      teVisitPhotos.push({id:tempId, preview:e.target.result, link:null, uploading:false});
+      teRenderPhotoGrid();
+    };
+    r.readAsDataURL(f);
+  });
+}
+function teRenderPhotoGrid(){
+  document.getElementById('te-photo-grid').innerHTML=teVisitPhotos.map(p=>{
+    if(p.uploading) return `<div class="photo-thumb" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;"><i class="ti ti-loader-2 sync-spin"></i></div>`;
+    if(p.error) return `<div class="photo-thumb" style="display:flex;align-items:center;justify-content:center;background:#ffebeb;color:#e53e3e;"><i class="ti ti-alert-circle"></i></div>`;
+    return `<img src="${p.preview}" class="photo-thumb">`;
+  }).join('')+`<div class="photo-add" onclick="document.getElementById('te-photo-input').click()">+</div>`;
+}
+
+function teSaveVisit(){
+  const btnG=document.getElementById('te-btn-guardar-visita');
+  const stillUploading = teVisitPhotos.some(p=>p.uploading);
+  if(stillUploading){ showToast('⏳ Espera, aún se están subiendo las fotos'); return; }
+  btnG.disabled=true; btnG.textContent='✅ Visita guardada';
+  const pagoSel=document.querySelector('input[name="te-v-modopago"]:checked');
+  const firmaData = teSigHasContent ? document.getElementById('te-sigCanvas').toDataURL() : null;
+  const fotosLinksArr = teVisitPhotos.filter(p=>p.link).map(p=>p.link);
+  const fotosBase64Arr = teVisitPhotos.map(p=>p.preview).filter(Boolean);
+
+  // Datos para guardar en localStorage — incluye fotos y firma en base64
+  // para que siempre se vean en ESTE dispositivo, sin depender de Drive/internet
+  const dataLocal = {
+    clientId: teCurrentClientId,
+    fecha: document.getElementById('te-v-fecha').value,
+    tipo: document.getElementById('te-v-tipo').value,
+    detalle: document.getElementById('te-v-detalle').value,
+    observacion: document.getElementById('te-v-observacion').value,
+    responsabilidad: document.getElementById('te-v-responsabilidad').checked,
+    modoPago: pagoSel ? pagoSel.value : '',
+    costoServicio: document.getElementById('te-v-costo').value,
+    fotos_count: teVisitPhotos.length,
+    tiene_firma: firmaData ? 'Si' : 'No',
+    fotosLinks: fotosLinksArr,
+    fotos: fotosBase64Arr,
+    firma: firmaData
+  };
+
+  // Datos completos para enviar al Excel
+  const dataSync = { ...dataLocal, fotosLinks: fotosLinksArr.join(','), firma: firmaData };
+
+  let visitId;
+  if(teEditingVisitId){
+    visitId = teEditingVisitId;
+    const idx = teDb.visits.findIndex(x=>String(x.id)===String(teEditingVisitId));
+    teDb.visits[idx] = {...teDb.visits[idx], ...dataLocal};
+  } else {
+    visitId = 'v_' + Date.now();
+    teDb.visits.push({id: visitId, ...dataLocal});
+    teCurrentVisitId = visitId;
+  }
+
+  teSaveDb();
+
+  // Enviar al Excel con los links de fotos (ya no base64)
+  teSyncToSheets({type:'visit', id: visitId, ...dataSync});
+
+  document.getElementById('te-post-save-btns').style.display='block';
+  document.getElementById('te-btn-cancelar').style.display='none';
+  showToast('✅ Visita guardada');
+  teAutoGenerarYSubirPDF(visitId);
+}
+
+function teOpenVisit(id){
+  teCurrentVisitId=id; const v=teDb.visits.find(x=>String(x.id)===String(id)); if(!v) return;
+  const fotosViejas = v.fotos||[];
+  const fHtml=fotosViejas.length?fotosViejas.map(p=>`<img src="${p}" style="width:100%;border-radius:10px;margin-bottom:8px;" loading="lazy">`).join(''):'';
+  const sHtml=v.firma?`<div class="section-title">Firma del cliente</div><img src="${v.firma}" class="sig-preview">`:'';
+  const respHtml=v.responsabilidad?`<div class="detail-row"><span class="detail-label">Responsabilidad</span><span class="detail-value" style="color:#0a6e4a;">✅ Aceptada</span></div>`:'';
+  const pagoHtml=(v.modoPago||v.costoServicio)?`<div class="detail-row"><span class="detail-label">Modo de pago</span><span class="detail-value">${v.modoPago||'—'}</span></div><div class="detail-row"><span class="detail-label">Costo</span><span class="detail-value" style="color:#0a6e4a;font-weight:700;">${v.costoServicio?'$'+parseFloat(v.costoServicio).toFixed(2):'—'}</span></div>`:'';
+  const pdfHtml = v.link_reporte ? `<a href="${v.link_reporte}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:#0a6e4a;color:#fff;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;margin-top:14px;"><i class="ti ti-file-type-pdf"></i> Ver reporte PDF <i class="ti ti-external-link" style="font-size:14px;"></i></a><p style="font-size:11px;color:#999;text-align:center;margin:6px 0 0;">Incluye fotos y firma del cliente · Guardado en Drive</p>` : (fHtml?'':'<p style="font-size:12px;color:#999;text-align:center;margin-top:14px;">El reporte se está guardando en Drive...</p>');
+  document.getElementById('te-visit-detail-content').innerHTML=`<div class="info-card"><div class="detail-row"><span class="detail-label">Servicio</span><span class="detail-value" style="font-weight:700;">${v.tipo}</span></div><div class="detail-row"><span class="detail-label">Fecha</span><span class="detail-value">${v.fecha}</span></div>${respHtml}${pagoHtml}<div class="section-title" style="margin-top:12px;">Diagnóstico</div><p style="font-size:14px;background:#f9f9f9;padding:8px;border-radius:6px;white-space:pre-wrap;">${v.detalle||'Sin detalles'}</p><div class="section-title" style="margin-top:12px;">Trabajo realizado</div><p style="font-size:14px;background:#f9f9f9;padding:8px;border-radius:6px;white-space:pre-wrap;">${v.observacion||'Sin observaciones'}</p>${fHtml?'<div class="section-title">Evidencias fotográficas</div>'+fHtml:''}${sHtml}${pdfHtml}<button onclick="teGoScreen('te-screen-home')" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:#fff;color:#333;border:1px solid #ddd;border-radius:10px;font-size:14px;font-weight:600;margin-top:10px;cursor:pointer;"><i class="ti ti-home"></i> Inicio</button></div>`;
+  teGoScreen('te-screen-visit-detail');
+}
+
+function teDeleteVisit(){
+  if(confirm("¿Seguro que quieres eliminar esta visita?")){
+    teDb.visits=teDb.visits.filter(x=>x.id!==teCurrentVisitId);
+    teSaveDb(); showToast("Visita eliminada"); teGoScreen('te-screen-client-detail');
+  }
+}
+
+function teBuildPDF(v, c){
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF({unit:'mm',format:'a4'});
+  const W=210,M=15; let y=15;
+  pdf.setFillColor(10,110,74); pdf.rect(0,0,W,30,'F');
+  pdf.setTextColor(255,255,255); pdf.setFontSize(16); pdf.setFont('helvetica','bold');
+  pdf.text('Versión de Prueba - Servicio Técnico',M,13);
+  pdf.setFontSize(9); pdf.setFont('helvetica','normal');
+  pdf.text('Reporte oficial de servicio de aire acondicionado',M,20);
+  pdf.text('Generado: '+new Date().toLocaleString('es-EC',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}),M,27);
+  y=38;
+  function sec(t){pdf.setFillColor(240,240,240);pdf.rect(M,y,W-M*2,7,'F');pdf.setTextColor(50,50,50);pdf.setFontSize(9);pdf.setFont('helvetica','bold');pdf.text(t.toUpperCase(),M+2,y+5);y+=10;}
+  function fil(l,v2){pdf.setFontSize(8);pdf.setTextColor(120,120,120);pdf.setFont('helvetica','normal');pdf.text(l+':',M+2,y);pdf.setTextColor(30,30,30);pdf.setFontSize(9);const ln=pdf.splitTextToSize(String(v2||'—'),W-M*2-38);pdf.text(ln,M+40,y);y+=ln.length*5+2;}
+  function blq(t,tx){sec(t);pdf.setFont('helvetica','normal');pdf.setTextColor(30,30,30);pdf.setFontSize(9);const ln=pdf.splitTextToSize(tx||'Sin información.',W-M*2-4);pdf.text(ln,M+2,y);y+=ln.length*5+6;}
+  sec('Información del cliente'); fil('Nombre',c.nombre); fil('Teléfono',c.telefono); fil('Dirección',c.direccion); y+=4;
+  sec('Servicio'); fil('Tipo',v.tipo); fil('Fecha',v.fecha); fil('Responsabilidad',v.responsabilidad?'✓ Aceptada':'No aplica'); fil('Modo de pago',v.modoPago||'—'); fil('Costo',v.costoServicio?'$'+parseFloat(v.costoServicio).toFixed(2):'—'); y+=4;
+  blq('Diagnóstico / Estado inicial',v.detalle); blq('Trabajo realizado',v.observacion);
+  const fotos=v.fotos||[];
+  if(fotos.length){ sec('Evidencias fotográficas'); let xi=M; for(let i=0;i<Math.min(fotos.length,6);i++){try{const iW=55,iH=42;if(xi+iW>W-M){xi=M;y+=iH+5;}if(y+iH>270){pdf.addPage();y=15;xi=M;}pdf.addImage(fotos[i],'JPEG',xi,y,iW,iH,undefined,'MEDIUM');xi+=iW+5;}catch(e){}} y+=47;}
+  if(v.firma){if(y+45>270){pdf.addPage();y=15;}sec('Firma del cliente');try{pdf.addImage(v.firma,'PNG',M,y,80,30,undefined,'MEDIUM');y+=35;}catch(e){}}
+  if(y+12>270){pdf.addPage();y=15;}
+  pdf.setDrawColor(200,200,200);pdf.line(M,y,W-M,y);y+=6;
+  pdf.setFontSize(8);pdf.setTextColor(150,150,150);pdf.setFont('helvetica','italic');
+  pdf.text('Reporte generado por Versión de Prueba - Servicio Técnico',M,y);
+  return pdf;
+}
+
+async function teUploadPDF(pdf, v, c){
+  try{
+    const pdfDataUri = pdf.output('datauristring');
+    const params = new URLSearchParams();
+    params.append('action','uploadPDF');
+    params.append('pdf', pdfDataUri);
+    params.append('cliente', c.nombre.replace(/[^a-zA-Z0-9]/g,'_'));
+    params.append('visitaId', v.id);
+    const txt = await fetch(TE_SHEET_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:params.toString()}).then(r=>r.text());
+    let res; try{ res=JSON.parse(txt); }catch(e){ res={status:'error'}; }
+    if(res.status==='ok'){
+      v.link_reporte = res.link;
+      teSaveDb();
+      teSyncToSheets({type:'visit', id: v.id, link_reporte: res.link});
+      return true;
+    }
+    return false;
+  }catch(err){
+    return false;
+  }
+}
+
+async function teAutoGenerarYSubirPDF(visitId){
+  try{
+    const v=teDb.visits.find(x=>String(x.id)===String(visitId));
+    const c=v?teDb.clients.find(x=>String(x.id)===String(v.clientId)):null;
+    if(!v||!c){
+      console.error('TE PDF: no se encontró la visita o el cliente', {visitId, encontroVisita:!!v, encontroCliente:!!c});
+      showToast('⚠️ No se pudo generar el reporte (visita/cliente no encontrado)');
+      return;
+    }
+    showToast('Guardando reporte en Drive...');
+    const pdf=teBuildPDF(v,c);
+    const ok=await teUploadPDF(pdf, v, c);
+    showToast(ok?'✅ Reporte guardado en Drive':'⚠️ No se pudo subir el reporte a Drive');
+  }catch(err){
+    // Antes, si algo fallaba aquí (ej: jsPDF, addImage con una foto corrupta),
+    // el error se perdía como "unhandled promise rejection" y no se veía NINGÚN
+    // mensaje en pantalla. Ahora se atrapa y se avisa siempre.
+    console.error('TE PDF error:', err);
+    showToast('⚠️ Error generando el reporte: '+(err && err.message ? err.message : 'ver consola'));
+  }
+}
+
+async function teGenerarPDF(){
+  const v=teDb.visits.find(x=>String(x.id)===String(teCurrentVisitId));
+  const c=teDb.clients.find(x=>String(x.id)===String(teCurrentClientId));
+  if(!v||!c){ showToast('No se encontró la visita'); return; }
+  showToast('Generando PDF...');
+  const pdf=teBuildPDF(v,c);
+  pdf.save(`Reporte_${c.nombre.replace(/\s+/g,'_')}_${v.fecha}.pdf`);
+  showToast('✅ PDF descargado, subiendo a Drive...');
+  const ok=await teUploadPDF(pdf, v, c);
+  showToast(ok?'✅ PDF guardado en Drive':'⚠️ PDF descargado, pero no se pudo subir a Drive');
+}
+
+teUpdateStats(); teRenderClients();
+
+// ══════════════════════════════════════════════════════════
+//  VERSIÓN DE PRUEBA — LÍMITE DE CONTACTOS
+// ══════════════════════════════════════════════════════════
+function showProModal(){
+  document.getElementById('pro-modal').style.display='flex';
+}
+function closeProModal(){
+  document.getElementById('pro-modal').style.display='none';
+}
+
+
+// ══════════════════════════════════════════════════════════
+//  CALENDARIO — THERMOELECTRIC
+// ══════════════════════════════════════════════════════════
+let teCalYear, teCalMonth, teCalSelDay=null;
+const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DIAS=['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
+
+function teSetTab(tab){
+  const isClientes = tab==='clientes';
+  document.getElementById('te-tab-clientes-content').style.display = isClientes?'block':'none';
+  document.getElementById('te-tab-agenda-content').style.display = isClientes?'none':'block';
+  document.getElementById('te-tab-clientes').className = 'tab-btn'+(isClientes?' active-thermo':'');
+  document.getElementById('te-tab-agenda').className = 'tab-btn'+(!isClientes?' active-thermo':'');
+  if(!isClientes) teRenderCal();
+}
+
+function teInitCal(){
+  const now=new Date();
+  teCalYear=now.getFullYear(); teCalMonth=now.getMonth();
+}
+
+function teCalPrev(){ teCalMonth--; if(teCalMonth<0){teCalMonth=11;teCalYear--;} teCalSelDay=null; teRenderCal(); }
+function teCalNext(){ teCalMonth++; if(teCalMonth>11){teCalMonth=0;teCalYear++;} teCalSelDay=null; teRenderCal(); }
+
+function teVisitDaysInMonth(y,m){
+  const days={};
+  teDb.visits.forEach(v=>{
+    if(!v.fecha) return;
+    const d=new Date(v.fecha+'T12:00:00');
+    if(d.getFullYear()===y&&d.getMonth()===m){
+      const day=d.getDate();
+      if(!days[day]) days[day]=[];
+      days[day].push(v);
+    }
+  });
+  return days;
+}
+
+function teRenderCal(){
+  if(teCalYear===undefined) teInitCal();
+  document.getElementById('te-cal-title').textContent=MESES[teCalMonth]+' '+teCalYear;
+  const daysMap=teVisitDaysInMonth(teCalYear,teCalMonth);
+  const firstDay=new Date(teCalYear,teCalMonth,1).getDay();
+  const offset=firstDay===0?6:firstDay-1;
+  const total=new Date(teCalYear,teCalMonth+1,0).getDate();
+  let html=DIAS.map(d=>`<div class="cal-day-label">${d}</div>`).join('');
+  for(let i=0;i<offset;i++) html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=total;d++){
+    const hasV=daysMap[d]?'has-visits cal-has-thermo':'';
+    const isSel=teCalSelDay===d?'cal-day-selected-thermo':'';
+    html+=`<div class="cal-day ${hasV} ${isSel}" onclick="teSelectDay(${d})">${d}</div>`;
+  }
+  document.getElementById('te-cal-grid').innerHTML=html;
+  if(teCalSelDay) teRenderDayPanel(teCalSelDay);
+  else document.getElementById('te-cal-day-panel').innerHTML='<div class="cal-empty"><i class="ti ti-hand-click" style="font-size:28px;display:block;margin-bottom:8px;"></i>Toca un día para ver los servicios</div>';
+}
+
+function teSelectDay(d){
+  teCalSelDay=d;
+  teRenderCal();
+}
+
+function teRenderDayPanel(d){
+  const daysMap=teVisitDaysInMonth(teCalYear,teCalMonth);
+  const visits=daysMap[d]||[];
+  const panel=document.getElementById('te-cal-day-panel');
+  if(!visits.length){
+    panel.innerHTML=`<div class="cal-day-summary"><div class="cal-day-header"><span class="cal-day-title">${d} de ${MESES[teCalMonth]}</span></div><div class="cal-empty">Sin servicios ese día</div></div>`;
+    return;
+  }
+  const total=visits.reduce((s,v)=>s+(parseFloat(v.costoServicio)||0),0);
+  const color='#0a6e4a';
+  let html=`<div class="cal-day-summary">
+    <div class="cal-day-header">
+      <span class="cal-day-title">${d} de ${MESES[teCalMonth]} — ${visits.length} servicio${visits.length>1?'s':''}</span>
+      <span class="cal-day-total" style="color:${color}">$${total.toFixed(2)}</span>
+    </div>`;
+  visits.forEach(v=>{
+    const c=teDb.clients.find(x=>String(x.id)===String(v.clientId));
+    html+=`<div class="cal-visit-item" onclick="teOpenVisitFromCal('${v.id}','${v.clientId}')">
+      <div class="cal-visit-name">${c?c.nombre:'Cliente'}</div>
+      <div class="cal-visit-meta">
+        <span class="cal-visit-tipo">${v.tipo||'—'}${v.modoPago?' · '+v.modoPago:''}</span>
+        <span class="cal-visit-costo" style="color:${color}">${v.costoServicio?'$'+parseFloat(v.costoServicio).toFixed(2):'Sin costo'}</span>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  panel.innerHTML=html;
+}
+
+function teOpenVisitFromCal(visitId, clientId){
+  teCurrentClientId=clientId;
+  teCurrentVisitId=visitId;
+  teGoScreen('te-screen-visit-detail');
+  teOpenVisit(visitId);
+}
+
+
+
+// Arranque: cargar datos guardados en este dispositivo y sincronizar con el Sheet demo
+teFetchData();
+
+</script>
+</body>
+</html>

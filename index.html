@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#1a1a1a;max-width:430px;margin:0 auto;min-height:100vh;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F1FBF6;color:#1a1a1a;max-width:430px;margin:0 auto;min-height:100vh;}
 
 /* ── PANTALLA DE SELECCIÓN ── */
 #select-screen{
@@ -61,23 +61,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* ── SHARED APP STYLES ── */
 .screen{display:none;padding:1rem;padding-bottom:5rem;}
 .screen.active{display:block;}
-.header{display:flex;align-items:center;gap:10px;background:#fff;margin:-1rem -1rem 1.5rem;padding:1rem;position:sticky;top:0;z-index:10;border-bottom:1px solid #e5e5e5;}
-.header h1{font-size:18px;font-weight:600;color:#1a1a1a;flex:1;}
+.header{display:flex;align-items:center;gap:10px;background:#F1FBF6;margin:-1rem -1rem 1.5rem;padding:1rem;position:sticky;top:0;z-index:10;border-bottom:1px solid #DCF2E5;}
+.header h1{font-size:18px;font-weight:800;color:#0a6e4a;flex:1;}
 .back-btn{background:none;border:none;cursor:pointer;color:#666;font-size:22px;padding:0;display:flex;align-items:center;}
 .section-title{font-size:12px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;margin-top:1.25rem;}
 .section-title:first-child{margin-top:0;}
 input,textarea,select{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;color:#1a1a1a;background:#fff;font-family:inherit;margin-bottom:10px;outline:none;-webkit-appearance:none;appearance:none;}
-input:focus,textarea:focus,select:focus{border-color:#1a1a1a;}
+input:focus,textarea:focus,select:focus{border-color:#34C38F;}
 textarea{min-height:85px;resize:vertical;}
-.btn-primary{width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit;}
-.btn-primary:disabled{background:#999;cursor:not-allowed;}
-.btn-secondary{width:100%;padding:13px;background:#fff;color:#1a1a1a;border:1px solid #ddd;border-radius:10px;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;}
+.btn-primary{width:100%;padding:13px;background:#34C38F;color:#04342C;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:inherit;}
+.btn-primary:disabled{background:#bfe8d6;color:#5c8f79;cursor:not-allowed;}
+.btn-secondary{width:100%;padding:13px;background:#fff;color:#1a1a1a;border:1px solid #DCF2E5;border-radius:10px;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;}
 .btn-danger{width:100%;padding:13px;background:#fff;color:#e53e3e;border:1px solid #e53e3e;border-radius:10px;font-size:15px;cursor:pointer;margin-top:8px;font-family:inherit;}
-.client-card{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;}
+.client-card{background:#fff;border:none;border-left:3px solid #34C38F;border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;box-shadow:0 1px 4px rgba(10,110,74,0.06);}
 .client-name{font-size:16px;font-weight:600;color:#1a1a1a;}
 .client-meta{font-size:13px;color:#888;margin-top:3px;}
-.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:#f0f0f0;color:#555;margin-top:6px;margin-right:4px;}
-.fab{position:fixed;bottom:1.5rem;right:1.5rem;width:56px;height:56px;border-radius:50%;background:#1a1a1a;color:#fff;border:none;font-size:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);z-index:20;}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:#E7F8EE;color:#0a6e4a;margin-top:6px;margin-right:4px;}
+.fab{position:fixed;bottom:1.5rem;right:1.5rem;width:56px;height:56px;border-radius:50%;background:#34C38F;color:#04342C;border:none;font-size:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(52,195,143,0.4);z-index:20;}
 .canvas-wrap{border:1px solid #ddd;border-radius:10px;margin-bottom:8px;background:#fff;overflow:hidden;}
 canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;height:160px;}
 .clear-sig{background:none;border:none;color:#888;font-size:13px;cursor:pointer;padding:4px 0;font-family:inherit;display:flex;align-items:center;gap:4px;}
@@ -95,16 +95,16 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
 .search-wrap input{padding-left:38px;margin-bottom:0;}
 .search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#aaa;font-size:18px;}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
-.stat-card{background:#fff;border-radius:14px;padding:14px;text-align:center;border:1px solid #e5e5e5;}
-.stat-num{font-size:28px;font-weight:700;color:#1a1a1a;}
+.stat-card{background:#fff;border-radius:12px;padding:14px;text-align:center;border:none;border-top:3px solid #34C38F;box-shadow:0 1px 4px rgba(10,110,74,0.06);}
+.stat-num{font-size:28px;font-weight:700;color:#0a6e4a;}
 .stat-label{font-size:12px;color:#888;margin-top:2px;}
-.visit-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
+.visit-card{background:#fff;border:none;border-left:3px solid #34C38F;border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;box-shadow:0 1px 4px rgba(10,110,74,0.06);}
 .visit-tipo{font-size:15px;font-weight:600;color:#1a1a1a;margin-top:2px;}
 .visit-fecha{font-size:13px;color:#888;}
-.toast{position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:500;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100;white-space:nowrap;}
+.toast{position:fixed;bottom:5.5rem;left:50%;transform:translateX(-50%);background:#04342C;color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:500;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100;white-space:nowrap;}
 .toast.show{opacity:1;}
 .app-logo{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0;}
-.info-card{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px 16px;margin-bottom:1rem;}
+.info-card{background:#fff;border:none;border-left:3px solid #34C38F;border-radius:12px;padding:14px 16px;margin-bottom:1rem;box-shadow:0 1px 4px rgba(10,110,74,0.06);}
 .sync-indicator{font-size:11px;color:#888;display:flex;align-items:center;gap:4px;font-weight:500;justify-content:center;margin-bottom:10px;}
 .sync-spin{animation:spin 1s linear infinite;}
 @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
@@ -122,12 +122,12 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
 .btn-switch-user{display:flex;align-items:center;gap:6px;padding:7px 13px;background:#fff;border:1.5px solid #e5e5e5;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;color:#1a1a1a;white-space:nowrap;}
 .btn-switch-user i{font-size:16px;}
 /* ── PESTAÑAS ── */
-.tabs{display:flex;background:#fff;border-bottom:1px solid #e5e5e5;margin:-1.5rem -1rem 1rem;}
+.tabs{display:flex;background:#F1FBF6;border-bottom:1px solid #DCF2E5;margin:-1.5rem -1rem 1rem;}
 .tab-btn{flex:1;padding:12px 0;border:none;background:none;font-size:14px;font-weight:500;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:2px solid transparent;font-family:inherit;}
 .tab-btn.active-thermo{color:#0a6e4a;border-bottom-color:#0a6e4a;}
 .tab-btn.active-jhon{color:#1a4a9a;border-bottom-color:#1a4a9a;}
 /* ── CALENDARIO ── */
-.cal-wrap{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px;margin-bottom:1rem;}
+.cal-wrap{background:#fff;border:none;border-top:3px solid #34C38F;border-radius:12px;padding:14px;margin-bottom:1rem;box-shadow:0 1px 4px rgba(10,110,74,0.06);}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .cal-nav button{background:none;border:none;cursor:pointer;color:#888;font-size:20px;padding:4px 8px;border-radius:8px;}
 .cal-nav span{font-size:15px;font-weight:600;color:#1a1a1a;}
@@ -144,7 +144,7 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
 .cal-day-selected-jhon.has-visits::after{background:#a3bfef !important;}
 .cal-has-thermo::after{background:#0a6e4a;}
 .cal-has-jhon::after{background:#1a4a9a;}
-.cal-day-summary{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px;margin-bottom:1rem;}
+.cal-day-summary{background:#fff;border:none;border-left:3px solid #34C38F;border-radius:12px;padding:14px;margin-bottom:1rem;box-shadow:0 1px 4px rgba(10,110,74,0.06);}
 .cal-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .cal-day-title{font-size:14px;font-weight:600;color:#1a1a1a;}
 .cal-day-total{font-size:13px;font-weight:700;}
@@ -174,7 +174,7 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
     <h2 style="font-size:19px;font-weight:800;color:#1a1a1a;margin-bottom:10px;">Versión de Prueba</h2>
     <p style="font-size:14px;color:#666;line-height:1.5;margin-bottom:22px;">Esta versión de prueba permite registrar hasta <b>5 contactos</b>.<br>Para agregar más contactos y desbloquear todas las funciones, comunícate al:</p>
     <a href="tel:0999805003" style="display:block;font-size:24px;font-weight:800;color:#0a6e4a;margin-bottom:22px;text-decoration:none;">📞 0999805003</a>
-    <button onclick="closeProModal()" style="width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Entendido</button>
+    <button onclick="closeProModal()" style="width:100%;padding:13px;background:#04342C;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;">Entendido</button>
   </div>
 </div>
 
@@ -205,6 +205,11 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
         <input type="text" id="te-search-input" placeholder="Buscar cliente..." oninput="teRenderClients()">
       </div>
       <div id="te-client-list"></div>
+      <div style="padding:14px 4px 4px;">
+        <button onclick="teGoNewClient()" style="width:100%;background:#34C38F;color:#04342C;border:none;text-align:center;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i class="ti ti-plus" style="font-size:16px;"></i> Nuevo cliente
+        </button>
+      </div>
     </div>
     <div id="te-tab-agenda-content" style="display:none;">
       <div class="cal-wrap">
@@ -217,7 +222,6 @@ canvas.sigCanvas{display:block;touch-action:none;cursor:crosshair;width:100%;hei
       </div>
       <div id="te-cal-day-panel"></div>
     </div>
-    <button class="fab" onclick="teGoNewClient()"><i class="ti ti-plus"></i></button>
   </div>
 
   <!-- NUEVO / EDITAR CLIENTE -->
@@ -456,20 +460,17 @@ function teRenderClients(){
   const list=document.getElementById('te-client-list');
   const filtered=teDb.clients.filter(c=>c.nombre.toLowerCase().includes(q)||(c.direccion||'').toLowerCase().includes(q));
   if(!filtered.length){ list.innerHTML=`<div class="empty-state"><i class="ti ti-users"></i><p>Sin resultados</p></div>`; return; }
-  list.innerHTML=`<div style="background:#fff;border-radius:12px;border:1px solid #eee;overflow:hidden;">` + filtered.map((c,idx)=>{
+  list.innerHTML=filtered.map(c=>{
     const visits=teDb.visits.filter(v=>String(v.clientId)===String(c.id));
     const ultima = visits.length ? visits.map(v=>v.fecha).sort().slice(-1)[0] : null;
-    const borderStyle = idx < filtered.length-1 ? 'border-bottom:1px solid #eee;' : '';
-    const badgeBg = visits.length ? '#FAEEDA' : '#f5f5f5';
-    const badgeColor = visits.length ? '#633806' : '#999';
-    return `<div onclick="teOpenClient('${c.id}')" style="padding:12px 14px;${borderStyle}display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+    return `<div onclick="teOpenClient('${c.id}')" style="background:#fff;border-left:3px solid #34C38F;border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;box-shadow:0 1px 4px rgba(10,110,74,0.06);display:flex;align-items:center;justify-content:space-between;">
       <div style="min-width:0;">
         <div style="font-size:14px;font-weight:600;color:#1a1a1a;">${c.nombre}</div>
         <div style="font-size:12px;color:#999;margin-top:2px;">${ultima ? 'Últ. visita: '+ultima : (c.direccion||'Sin dirección')}</div>
       </div>
-      <span style="flex-shrink:0;margin-left:10px;background:${badgeBg};color:${badgeColor};font-size:12px;font-weight:600;padding:3px 9px;border-radius:8px;">${visits.length}</span>
+      <span style="flex-shrink:0;margin-left:10px;background:#E7F8EE;color:#0a6e4a;font-size:12px;font-weight:600;padding:3px 9px;border-radius:8px;">${visits.length}</span>
     </div>`;
-  }).join('') + `</div>`;
+  }).join('');
 }
 
 function teOpenClient(id){ teCurrentClientId=id; teGoScreen('te-screen-client-detail'); }

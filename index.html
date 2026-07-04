@@ -456,15 +456,20 @@ function teRenderClients(){
   const list=document.getElementById('te-client-list');
   const filtered=teDb.clients.filter(c=>c.nombre.toLowerCase().includes(q)||(c.direccion||'').toLowerCase().includes(q));
   if(!filtered.length){ list.innerHTML=`<div class="empty-state"><i class="ti ti-users"></i><p>Sin resultados</p></div>`; return; }
-  list.innerHTML=filtered.map(c=>{
+  list.innerHTML=`<div style="background:#fff;border-radius:12px;border:1px solid #eee;overflow:hidden;">` + filtered.map((c,idx)=>{
     const visits=teDb.visits.filter(v=>String(v.clientId)===String(c.id));
-    return `<div class="client-card" onclick="teOpenClient('${c.id}')">
-      <div class="client-name">${c.nombre}</div>
-      <div class="client-meta"><i class="ti ti-map-pin"></i> ${c.direccion||'Sin dirección'}</div>
-      <span class="badge" style="background:#e6f9f0;color:#0a6e4a;">${c.tipo||'Sin tipo'}</span>
-      <span class="badge">${visits.length} visitas</span>
+    const ultima = visits.length ? visits.map(v=>v.fecha).sort().slice(-1)[0] : null;
+    const borderStyle = idx < filtered.length-1 ? 'border-bottom:1px solid #eee;' : '';
+    const badgeBg = visits.length ? '#FAEEDA' : '#f5f5f5';
+    const badgeColor = visits.length ? '#633806' : '#999';
+    return `<div onclick="teOpenClient('${c.id}')" style="padding:12px 14px;${borderStyle}display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+      <div style="min-width:0;">
+        <div style="font-size:14px;font-weight:600;color:#1a1a1a;">${c.nombre}</div>
+        <div style="font-size:12px;color:#999;margin-top:2px;">${ultima ? 'Últ. visita: '+ultima : (c.direccion||'Sin dirección')}</div>
+      </div>
+      <span style="flex-shrink:0;margin-left:10px;background:${badgeBg};color:${badgeColor};font-size:12px;font-weight:600;padding:3px 9px;border-radius:8px;">${visits.length}</span>
     </div>`;
-  }).join('');
+  }).join('') + `</div>`;
 }
 
 function teOpenClient(id){ teCurrentClientId=id; teGoScreen('te-screen-client-detail'); }
